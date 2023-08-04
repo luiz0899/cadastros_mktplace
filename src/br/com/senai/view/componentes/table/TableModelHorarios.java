@@ -45,18 +45,21 @@ private static final long serialVersionUID = 1L;
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Horario Restaurante = horarios.get(rowIndex);
+		
 		if (columnIndex == 0) {
-			return Restaurante.getDiaDaSemana() ;
+			return horarios.get(rowIndex).getDiaDaSemana() ;
 		}else if (columnIndex == 1) {
-			return Restaurante.getHoraAbertura();
+			return horarios.get(rowIndex).getHoraAbertura();
 		}else if (columnIndex == 2) {
-			return Restaurante.getHoraFechamento();
+			return horarios.get(rowIndex).getHoraFechamento();
 		}
 		throw new IllegalArgumentException("Indice inválido");
 	}
+	
 	public void removerPorId(int rowIndex) {
+		
 		this.horarios.remove(rowIndex);
+		
 	}
 	
 	public boolean Vazio() {

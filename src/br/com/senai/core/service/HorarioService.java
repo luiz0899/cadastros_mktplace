@@ -23,10 +23,13 @@ public class HorarioService {
 	public void salvar (Horario horario ) {
 		
 		this.validar(horario);
+		
 		boolean isJaInserido = horario.getId() > 0 ; 
+		System.out.println(horario.getId());
 		if(isJaInserido) {
+;
 			this.dao.Alterar(horario);
-			JOptionPane.showMessageDialog(null , "Horario salvo com sucesso!");
+			JOptionPane.showMessageDialog(null , "Horario alterado com sucesso!");
 		}else {
 			this.dao.inserir(horario);
 			JOptionPane.showMessageDialog(null , "Horario salvo com sucesso!");
@@ -37,7 +40,9 @@ public class HorarioService {
 	public void removerPor (int id) {
 	
 		if(id > 0 ) {
+			
 			this.dao.ExcluirPor(id);
+
 		}else {
 			throw new IllegalArgumentException("O id da Horario deve ser maior que zero ");
 		}
@@ -79,12 +84,18 @@ public class HorarioService {
 		List<Horario> horarios = new ArrayList<Horario>();
 		
 		horarios.addAll(listarPorId(horario.getRestaurante().getId()));
-			
-	 	for (Horario h : horarios) {
+	
 		
+ 		horarios.remove(horario.getId());
+ 		System.out.println(horarios);
+	
+	 	for (Horario h : horarios) {
+	 	
 			boolean isCampoNull  = horario.getDiaDaSemana().isBlank()
 								|| horario.getHoraAbertura() == null 
 								|| horario.getHoraFechamento() == null;
+			
+			
 			if (isCampoNull) {
 				throw new IllegalArgumentException("Campo nulo obrigatorio !");
 			}

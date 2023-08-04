@@ -25,7 +25,8 @@ public class DaoPostgresHorario implements DaoHorario {
 
 	private final String DELETE = "DELETE FROM horarios_atendimento WHERE id = ? " ;
 
-	private final String SELECT_BY_ID ="SELECT h.id id_horario, h.dia_semana, h.hora_abertura, h.hora_fechamento,r.id id_restaurante , r.nome nome_restaurante , r.descricao , r.cidade ,r.logradouro, "
+	private final String SELECT_BY_ID ="SELECT h.id id_horario, h.dia_semana, h.hora_abertura, h.hora_fechamento,r.id id_restaurante ,"
+									+" r.nome nome_restaurante , r.descricao , r.cidade ,r.logradouro, "
 									+ "	r.bairro , r.complemento  "
 							            +"FROM horarios_atendimento h INNER JOIN restaurantes r "
 							            +"ON h.id_restaurante = r.id WHERE r.id = ?";
@@ -177,8 +178,11 @@ public class DaoPostgresHorario implements DaoHorario {
 			ps = conexao.prepareStatement(SELECT_BY_ID);
 			ps.setInt(1, restaurante.getId());
 			rs = ps.executeQuery();
+		
 			while (rs.next()) {
+				
 				horarios.add(extrairDo(rs));
+				
 			}
 		}catch (Exception e) {
 			throw new RuntimeException("Ocorre um erro ao listar os horarios. Motivo: " + e.getMessage());
@@ -203,7 +207,9 @@ public class DaoPostgresHorario implements DaoHorario {
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {
+				
 				horarios.add(extrairDo(rs));
+				
 			}
 			
 		}catch (Exception e) {
@@ -255,9 +261,7 @@ public class DaoPostgresHorario implements DaoHorario {
 				
 			Endereco endereco = new Endereco(cidade, logradouro, bairro, complemento);
 			
-		
 			Restaurante restaurante = new Restaurante(idRestaurante,nomeRestaurante,descricao,endereco,null);
-			
 			
 			return new Horario (idHorario,dia_semana,hora_abertura,hora_fechamento,restaurante);
 			

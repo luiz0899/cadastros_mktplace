@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import br.com.senai.core.dao.DaoHorario;
 import br.com.senai.core.domain.Horario;
 import br.com.senai.core.domain.Restaurante;
 import br.com.senai.core.service.HorarioService;
@@ -118,6 +119,7 @@ public class ViewCadastroHorarios extends JFrame {
 
 						TableModelHorarios modelHorarios = new TableModelHorarios(horarios);
 						tableHorarios.setModel(modelHorarios);
+					    tableHorarios.updateUI();
 					
 						 
 					} else {
@@ -141,7 +143,7 @@ public class ViewCadastroHorarios extends JFrame {
 
 		listDiasSemana = new JComboBox<String>();
 
-		String[] diasSemana = { "", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA" };
+		String[] diasSemana = { "", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA","SABADO","DOMINGO"};
 
 		for (String dia : diasSemana) {
 			listDiasSemana.addItem(dia);
@@ -201,8 +203,9 @@ public class ViewCadastroHorarios extends JFrame {
 							Horario horario = new Horario(diaSelecionado, horaAbertura, horaFechamento, restauranteSelecionado);
 			
 							horarioService.salvar(horario);
-							
+							tableHorarios.updateUI();
 							nullCamp();
+							
 						}else {
 							
 							JOptionPane.showMessageDialog(null," Horario Invalido ") ;
@@ -233,13 +236,15 @@ public class ViewCadastroHorarios extends JFrame {
 
 					int isLinhaSelecinada = tableHorarios.getSelectedRow();
 
-					if (isLinhaSelecinada > 0) {
+					if (isLinhaSelecinada >= 0) {
 
 						TableModelHorarios model = (TableModelHorarios) tableHorarios.getModel();
 						Horario horarioSelecionado = model.getPor(isLinhaSelecinada);
 						editaHorario(horarioSelecionado);
+						tableHorarios.updateUI();
 
 					} else {
+						
 						JOptionPane.showMessageDialog(contentPane, "Selecione uma linha para edição");
 					}
 
@@ -258,6 +263,42 @@ public class ViewCadastroHorarios extends JFrame {
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+
+					int isLinhaSelecinada = tableHorarios.getSelectedRow();
+		            TableModelHorarios model = (TableModelHorarios) tableHorarios.getModel();
+		            Horario horarioSelecionado = model.getPor(isLinhaSelecinada);
+					
+		            if (isLinhaSelecinada >= 0) {
+						
+						   horarioService.removerPor(horarioSelecionado.getId());
+                             
+						   int confirmacao = JOptionPane.showConfirmDialog(contentPane, "Deseja excluir ?", "Confirmação de Exclusão .",
+		                            JOptionPane.YES_NO_OPTION);
+						   
+						   if (confirmacao == 0 ) {
+
+							   model.removerPorId(isLinhaSelecinada);
+      
+	                           tableHorarios.updateUI();
+	                           
+	                           JOptionPane.showMessageDialog(null ,"cadastro execultado");
+						   }
+
+					} else {
+						
+						JOptionPane.showMessageDialog(contentPane, "Selecione uma linha para edição");
+					}
+
+				} catch (Exception e2) {
+				
+					throw new IllegalArgumentException(
+							"Ocorreu um erro ao selecionar a lina na tabela. Motivo: " + e2.getMessage());
+				}
+
+				
+				
 			}
 		});
 		btnExcluir.setBounds(390, 221, 165, 21);

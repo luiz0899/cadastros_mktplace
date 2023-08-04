@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import java.awt.Canvas;
 
 public class ViewListarRestaurante extends JFrame {
 
@@ -63,8 +64,20 @@ public class ViewListarRestaurante extends JFrame {
 		btnListar.setBounds(495, 57, 85, 26);
 		contentPane.add(btnListar);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
+		JLabel lblNewLabel_3 = new JLabel("Restaurantes Encontrado ");
 		lblNewLabel_3.setBounds(30, 88, 149, 16);
 		contentPane.add(lblNewLabel_3);
+		
+		JButton btnExcluir = new JButton("Excluir");
+		btnExcluir.setBounds(452, 309, 99, 26);
+		contentPane.add(btnExcluir);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setBounds(343, 309, 99, 26);
+		contentPane.add(btnEditar);
+		
+		JLabel lblNewLabel_4 = new JLabel("Ações");
+		lblNewLabel_4.setBounds(334, 283, 55, 16);
+		contentPane.add(lblNewLabel_4);
 	}
 }
