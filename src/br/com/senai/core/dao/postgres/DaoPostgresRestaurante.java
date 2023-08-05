@@ -38,12 +38,16 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 									  +"FROM restaurantes r ,categorias c "
 									  +"WHERE r.id_categoria = c.id ORDER BY r.nome" ; 
 											
+	private final String COUNT_BY_CATEG = " SELECT cont(*) qtde FROM restaurantes r where r.id_categoria = ? " ;
+	
 	private Connection conexao ;
 	
 	public DaoPostgresRestaurante() {
 		
 		this.conexao = ManagerDb.getInstance().getConexao(); 
 	}
+	
+	
 	
 	@Override
 	public void inserir(Restaurante restaurante) {
@@ -140,6 +144,36 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 		}
 
 	}
+	
+	public int contarPor(int idDaCategoria) {
+			
+			PreparedStatement ps = null ;
+			ResultSet rs = null ;
+			
+			try {
+				
+				ps = conexao.prepareStatement(COUNT_BY_CATEG);
+				ps.setInt(1,idDaCategoria);
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					return rs.getInt("qtde");
+				}
+				 
+				return 0 ;
+				
+			} catch (Exception e) {
+				
+				throw new RuntimeException("ocorreu um erro ao contar o restaurante " + e.getMessage()) ;
+		
+			}finally {
+				
+				ManagerDb.getInstance().fechar(ps);
+				ManagerDb.getInstance().fechar(rs);
+				
+			}
+			
+		}
 
 	@Override
 	public Restaurante buscarPor(int id) {

@@ -65,9 +65,4 @@ private static final long serialVersionUID = 1L;
 	public boolean Vazio() {
 		return horarios.isEmpty();
 	}
-
-
-	
-	
-
 }

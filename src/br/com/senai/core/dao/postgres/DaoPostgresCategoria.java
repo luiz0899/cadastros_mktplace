@@ -21,7 +21,7 @@ public class DaoPostgresCategoria implements DaoCategoria {
 	private final String DELETE = "DELETE FROM categorias WHERE id = ?";
 	private final String SELECT_BY_ID = "SELECT c.id , c.nome FROM categorias c WHERE c.id = ? ";
 	private final String SELECT_BY_NOME = "SELECT c.id ,c.nome FROM categorias c WHERE Upper(c.nome) LIKE Upper(?) ORDER BY c.nome ";
-
+	
 	private Connection conexao;
 	
 	public DaoPostgresCategoria() {

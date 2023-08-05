@@ -52,6 +52,9 @@ public class ViewCadastroHorarios extends JFrame {
 			HorarioService horarioService;
 			RestauranteService restauranteService;
 			Restaurante restaurante;
+			Horario horarioSelecionado ;
+			
+	public boolean isAlterar = false;
 
 	public void carregarCombo() {
 
@@ -118,6 +121,7 @@ public class ViewCadastroHorarios extends JFrame {
 					if (horarios != null) {
 
 						TableModelHorarios modelHorarios = new TableModelHorarios(horarios);
+						System.out.println(modelHorarios);
 						tableHorarios.setModel(modelHorarios);
 					    tableHorarios.updateUI();
 					
@@ -193,22 +197,31 @@ public class ViewCadastroHorarios extends JFrame {
 						
 						Time maxHora =  Time.valueOf("23:59:59");
 						Time horaAbertura = Time.valueOf(txtAbertura + ":00");
-						Time horaFechamento = Time.valueOf(txtFechamento + ":00");						
+						Time horaFechamento = Time.valueOf(txtFechamento + ":00");	
 						
-						if ( horaAbertura.compareTo(maxHora) < 0 && horaFechamento.compareTo(maxHora) < 0 ) {
-
-							String diaSelecionado = (String) listDiasSemana.getSelectedItem();
-							Restaurante restauranteSelecionado = (Restaurante) listRestaurante.getSelectedItem();
-			
-							Horario horario = new Horario(diaSelecionado, horaAbertura, horaFechamento, restauranteSelecionado);
-			
-							horarioService.salvar(horario);
-							tableHorarios.updateUI();
-							nullCamp();
+						if(isAlterar == false ) {
+								
+								if ( horaAbertura.compareTo(maxHora) < 0 && horaFechamento.compareTo(maxHora) < 0 ) {
+		
+									String diaSelecionado = (String) listDiasSemana.getSelectedItem();
+									Restaurante restauranteSelecionado = (Restaurante) listRestaurante.getSelectedItem();
+					
+									Horario horario = new Horario(diaSelecionado, horaAbertura, horaFechamento, restauranteSelecionado);
+					
+									horarioService.salvar(horario);
+									tableHorarios.updateUI();
+									nullCamp();
+									
+								}else {
+									
+									JOptionPane.showMessageDialog(null," Horario Invalido ") ;
+								}
+						}else {	
 							
-						}else {
+							System.out.println(horarioSelecionado + "-");
+							horarioService.salvar(horarioSelecionado);
+							isAlterar = false ;
 							
-							JOptionPane.showMessageDialog(null," Horario Invalido ") ;
 						}
 						
 						
@@ -233,13 +246,15 @@ public class ViewCadastroHorarios extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-
+					 
 					int isLinhaSelecinada = tableHorarios.getSelectedRow();
-
+				
 					if (isLinhaSelecinada >= 0) {
-
+						
+						
 						TableModelHorarios model = (TableModelHorarios) tableHorarios.getModel();
-						Horario horarioSelecionado = model.getPor(isLinhaSelecinada);
+						horarioSelecionado = model.getPor(isLinhaSelecinada);
+						isAlterar = true ;
 						editaHorario(horarioSelecionado);
 						tableHorarios.updateUI();
 

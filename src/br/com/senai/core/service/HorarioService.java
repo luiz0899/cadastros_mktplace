@@ -25,12 +25,14 @@ public class HorarioService {
 		this.validar(horario);
 		
 		boolean isJaInserido = horario.getId() > 0 ; 
-		System.out.println(horario.getId());
+		
 		if(isJaInserido) {
 ;
 			this.dao.Alterar(horario);
 			JOptionPane.showMessageDialog(null , "Horario alterado com sucesso!");
+			
 		}else {
+			
 			this.dao.inserir(horario);
 			JOptionPane.showMessageDialog(null , "Horario salvo com sucesso!");
 
@@ -84,10 +86,8 @@ public class HorarioService {
 		List<Horario> horarios = new ArrayList<Horario>();
 		
 		horarios.addAll(listarPorId(horario.getRestaurante().getId()));
-	
 		
- 		horarios.remove(horario.getId());
- 		System.out.println(horarios);
+		horarios.remove(horario.getId());
 	
 	 	for (Horario h : horarios) {
 	 	

@@ -16,6 +16,10 @@ import javax.swing.JMenu;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
+
+import br.com.senai.view.categoria.ViewCadastroCategoria;
+import br.com.senai.view.categoria.ViewConsultaCategoria;
+
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -66,6 +70,14 @@ public class ViewMenu extends JFrame {
 		menuBar.add(mnCadastros);
 		
 		JMenuItem btnCadastro = new JMenuItem("Cadastros");
+		btnCadastro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ViewConsultaCategoria view = new ViewConsultaCategoria();
+				view.setVisible(true);
+				
+			}
+		});
 		mnCadastros.add(btnCadastro);
 		
 		JMenuItem btnRestaurante = new JMenuItem("Restaurantes");
