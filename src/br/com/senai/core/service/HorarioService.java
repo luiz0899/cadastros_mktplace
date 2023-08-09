@@ -1,11 +1,8 @@
 package br.com.senai.core.service;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import br.com.senai.core.dao.DaoHorario;
 import br.com.senai.core.dao.FactoryDao;
 import br.com.senai.core.domain.Horario;
@@ -23,11 +20,11 @@ public class HorarioService {
 	public void salvar (Horario horario ) {
 		
 		this.validar(horario);
-		
+			
 		boolean isJaInserido = horario.getId() > 0 ; 
 		
 		if(isJaInserido) {
-;
+		
 			this.dao.Alterar(horario);
 			JOptionPane.showMessageDialog(null , "Horario alterado com sucesso!");
 			
@@ -46,7 +43,7 @@ public class HorarioService {
 			this.dao.ExcluirPor(id);
 
 		}else {
-			throw new IllegalArgumentException("O id da Horario deve ser maior que zero ");
+			throw new IllegalArgumentException("O id da Horario deve ser maior que zero .");
 		}
 		
 	}
@@ -56,11 +53,11 @@ public class HorarioService {
 		if (id > 0) {
 			Horario HorarioEncontrado = this.dao.buscarPor(id);
 			if (HorarioEncontrado == null) {
-				throw new IllegalArgumentException("Não foi encontrado Horario para o código informado");
+				throw new IllegalArgumentException("Não foi encontrado Horario para o código informado .");
 			}
 			return HorarioEncontrado;
 		} else {
-			throw new IllegalArgumentException("O id da Horario deve ser maior que 0");
+			throw new IllegalArgumentException("O id da Horario deve ser maior que 0 .");
 		}
 	}
 	
@@ -87,10 +84,10 @@ public class HorarioService {
 		
 		horarios.addAll(listarPorId(horario.getRestaurante().getId()));
 		
-		horarios.remove(horario.getId());
-	
+		horarios.remove(horario);
+		
 	 	for (Horario h : horarios) {
-	 	
+	 			
 			boolean isCampoNull  = horario.getDiaDaSemana().isBlank()
 								|| horario.getHoraAbertura() == null 
 								|| horario.getHoraFechamento() == null;
@@ -105,7 +102,8 @@ public class HorarioService {
 							             (horario.getHoraFechamento().compareTo(h.getHoraAbertura()) > 0 && 
 							             horario.getHoraFechamento().compareTo(h.getHoraFechamento()) <= 0)
 							             ||horario.getHoraAbertura().equals(h.getHoraAbertura())
-							             ||horario.getHoraFechamento().equals( h.getHoraFechamento());
+							             ||horario.getHoraFechamento().equals( h.getHoraFechamento())
+							             ;
 		
 			if(isHorarioExistente && horario.getDiaDaSemana().equals(h.getDiaDaSemana()) ) {
 				throw new IllegalArgumentException("Horario ja existente.");
@@ -124,7 +122,7 @@ public class HorarioService {
 			}									
 			
 		}
-		
+	
 	}
 	
 }

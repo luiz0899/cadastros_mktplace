@@ -1,16 +1,13 @@
 package br.com.senai.core.dao.postgres;
 
-import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.com.senai.core.dao.DaoHorario;
 import br.com.senai.core.dao.ManagerDb;
-import br.com.senai.core.domain.Categoria;
 import br.com.senai.core.domain.Endereco;
 import br.com.senai.core.domain.Horario;
 import br.com.senai.core.domain.Restaurante;
@@ -18,7 +15,7 @@ import br.com.senai.core.domain.Restaurante;
 public class DaoPostgresHorario implements DaoHorario {
 	
 	private final String INSERT = "INSERT INTO horarios_atendimento (dia_semana,hora_abertura,hora_fechamento,id_restaurante)"
-								+"VALUES (?,?,?,? )";
+								+"VALUES (?,?,?,?)";
 
 	private final String UPDATE = "UPDATE  horarios_atendimento  SET dia_semana = ?, hora_abertura = ?, hora_fechamento = ?, id_restaurante = ? "
 								+ "WHERE id = ?";
@@ -47,7 +44,6 @@ public class DaoPostgresHorario implements DaoHorario {
 	@Override
 	public void inserir(Horario horario) {
 		
-		
 		PreparedStatement ps = null ;
 		
 		try {
@@ -58,7 +54,6 @@ public class DaoPostgresHorario implements DaoHorario {
 			ps.setTime(3,horario.getHoraFechamento());
 			ps.setInt(4,horario.getRestaurante().getId());
 			ps.execute();
-		
 			
 		} catch (Exception e) {
 			
@@ -77,18 +72,19 @@ public class DaoPostgresHorario implements DaoHorario {
 		try {
 		
 			ManagerDb.getInstance().configurarAutocommitDa(conexao, false);
-
+		
 			ps = conexao.prepareStatement(UPDATE);
 			ps.setString(1,horario.getDiaDaSemana());
 			ps.setTime(2,horario.getHoraAbertura());
 			ps.setTime(3,horario.getHoraFechamento());
-			ps.setInt(4,horario.getRestaurante().getId()  );
+			ps.setInt(4,horario.getRestaurante().getId());
 			ps.setInt(5,horario.getId());
 			
 			Boolean isAlteradoOk = ps.executeUpdate() == 1;
 
 			if (isAlteradoOk) {
 				this.conexao.commit();
+				
 			} else {
 				this.conexao.rollback();
 			}

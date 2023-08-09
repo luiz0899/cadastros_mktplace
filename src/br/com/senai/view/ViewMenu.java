@@ -88,6 +88,7 @@ public class ViewMenu extends JFrame {
 		menuBar.add(config);
 		
 		JMenuItem btnHorarios = new JMenuItem("Horarios");
+		
 		btnHorarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

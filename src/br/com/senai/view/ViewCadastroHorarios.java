@@ -85,6 +85,7 @@ public class ViewCadastroHorarios extends JFrame {
 		this.listDiasSemana.setSelectedItem(horario.getDiaDaSemana());
 
 	}
+	
 
 	/**
 	 * Create the frame.
@@ -121,10 +122,7 @@ public class ViewCadastroHorarios extends JFrame {
 					if (horarios != null) {
 
 						TableModelHorarios modelHorarios = new TableModelHorarios(horarios);
-						System.out.println(modelHorarios);
 						tableHorarios.setModel(modelHorarios);
-					    tableHorarios.updateUI();
-					
 						 
 					} else {
 						throw new NullPointerException("Erro na tabela de horarios .");
@@ -184,6 +182,7 @@ public class ViewCadastroHorarios extends JFrame {
 			e.printStackTrace();
 		}
 
+
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnAdicionar.addActionListener(new ActionListener() {
@@ -199,35 +198,49 @@ public class ViewCadastroHorarios extends JFrame {
 						Time horaAbertura = Time.valueOf(txtAbertura + ":00");
 						Time horaFechamento = Time.valueOf(txtFechamento + ":00");	
 						
+						String diaSelecionado = (String) listDiasSemana.getSelectedItem();
+						Restaurante restauranteSelecionado = (Restaurante) listRestaurante.getSelectedItem();
+		
+						
 						if(isAlterar == false ) {
 								
 								if ( horaAbertura.compareTo(maxHora) < 0 && horaFechamento.compareTo(maxHora) < 0 ) {
 		
-									String diaSelecionado = (String) listDiasSemana.getSelectedItem();
-									Restaurante restauranteSelecionado = (Restaurante) listRestaurante.getSelectedItem();
-					
 									Horario horario = new Horario(diaSelecionado, horaAbertura, horaFechamento, restauranteSelecionado);
-					
 									horarioService.salvar(horario);
-									tableHorarios.updateUI();
 									nullCamp();
+									tableHorarios.updateUI();
 									
 								}else {
 									
 									JOptionPane.showMessageDialog(null," Horario Invalido ") ;
 								}
-						}else {	
+							}else {	
+								
+								
+								if ( horaAbertura.compareTo(maxHora) < 0 && horaFechamento.compareTo(maxHora) < 0 ) {
+		
+									horario.setHoraAbertura(horaAbertura);
+									horario.setHoraFechamento(horaFechamento);
+									horario.setRestaurante(restauranteSelecionado);
+									horario.setDiaDaSemana(diaSelecionado);
+									horarioService.salvar(horario);
+									isAlterar = false ;	
+									nullCamp();
+									tableHorarios.updateUI();
+									
+								}else {
+									
+									JOptionPane.showMessageDialog(null," Horario Invalido ") ;
+								}
 							
-							System.out.println(horarioSelecionado + "-");
-							horarioService.salvar(horarioSelecionado);
-							isAlterar = false ;
+							}
 							
-						}
-						
 						
 				} catch (Exception e2) {
 					
-					throw new IllegalArgumentException("erro ao adicionar os horarios. Motivo:" + e2.getMessage());
+					JOptionPane.showMessageDialog(contentPane,"erro ao adicionar os horarios. Motivo: " + e2.getMessage());
+		
 				}
 				
 
@@ -298,7 +311,7 @@ public class ViewCadastroHorarios extends JFrame {
       
 	                           tableHorarios.updateUI();
 	                           
-	                           JOptionPane.showMessageDialog(null ,"cadastro execultado");
+	                           JOptionPane.showMessageDialog(null ,"cadastro excluido .");
 						   }
 
 					} else {
