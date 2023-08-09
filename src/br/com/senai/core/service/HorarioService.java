@@ -84,8 +84,13 @@ public class HorarioService {
 		
 		horarios.addAll(listarPorId(horario.getRestaurante().getId()));
 		
-		horarios.remove(horario);
+		boolean isRemoveEdicao = (horarios.size() >= 2 );
 		
+		if (isRemoveEdicao ) {
+			
+			horarios.remove(horario);
+		}
+	
 	 	for (Horario h : horarios) {
 	 			
 			boolean isCampoNull  = horario.getDiaDaSemana().isBlank()
