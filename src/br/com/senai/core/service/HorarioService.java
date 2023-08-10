@@ -84,12 +84,15 @@ public class HorarioService {
 		
 		horarios.addAll(listarPorId(horario.getRestaurante().getId()));
 		
-		boolean isRemoveEdicao = (horarios.size() >= 2 );
+		boolean isPriEdicao = (horarios.size() <= 1 );
 		
-		if (isRemoveEdicao ) {
+		if (isPriEdicao ) {
 			
-			horarios.remove(horario);
+			isPrimeiraVal(horario);
+			
 		}
+		
+		horarios.remove(horario);
 	
 	 	for (Horario h : horarios) {
 	 			
@@ -129,5 +132,32 @@ public class HorarioService {
 		}
 	
 	}
+	
+	private void isPrimeiraVal(Horario horario) {
+				
+		boolean isCampoNull  = horario.getDiaDaSemana().isBlank()
+							|| horario.getHoraAbertura() == null 
+							|| horario.getHoraFechamento() == null;
+		
+		
+		if (isCampoNull) {
+		throw new IllegalArgumentException("Campo nulo obrigatorio !");
+		}
+		
+		boolean isHorariosIguais = (horario.getHoraAbertura().equals(horario.getHoraFechamento()));
+		
+		if(isHorariosIguais) {
+		throw new IllegalArgumentException("Horario de abertura não pode ser igual o de fechamento.");
+		}
+		
+		boolean isHorariosSuperior = (horario.getHoraFechamento().compareTo(horario.getHoraAbertura()) < 0 );
+		
+		if(isHorariosSuperior) {
+		throw new IllegalArgumentException("Horario de abertura não pode ser maior que o de fechamento.");
+		}									
+
+		
+	}
+	
 	
 }
