@@ -1,6 +1,5 @@
 package br.com.senai.core.service;
 
-import java.security.PublicKey;
 import java.util.List;
 
 import javax.swing.JOptionPane;

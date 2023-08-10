@@ -1,25 +1,18 @@
 package br.com.senai.view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import br.com.senai.core.dao.DaoHorario;
 import br.com.senai.core.domain.Horario;
 import br.com.senai.core.domain.Restaurante;
 import br.com.senai.core.service.HorarioService;
 import br.com.senai.core.service.RestauranteService;
 import br.com.senai.view.componentes.table.TableModelHorarios;
 
-import java.awt.Window.Type;
-import javax.swing.UIManager;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.SystemColor;
-import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -32,27 +25,26 @@ import java.text.ParseException;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
-import javax.swing.border.BevelBorder;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 public class ViewCadastroHorarios extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField inputAbertura;
 	private JTextField inputFechamento;
 	private JTable tableHorarios;
 	private JComboBox<Restaurante> listRestaurante;
 	private JComboBox<String> listDiasSemana;
-			Horario horario;
-			HorarioService horarioService;
-			RestauranteService restauranteService;
-			Restaurante restaurante;
-			Horario horarioSelecionado ;
+	private	Horario horario;
+	private	HorarioService horarioService;
+	private	RestauranteService restauranteService;
+	private	Horario horarioSelecionado ;
 			
 	public boolean isAlterar = false;
 
@@ -84,6 +76,14 @@ public class ViewCadastroHorarios extends JFrame {
 		this.listRestaurante.setSelectedItem(horario.getRestaurante());
 		this.listDiasSemana.setSelectedItem(horario.getDiaDaSemana());
 
+	}
+	
+	public void atualizaTable (Restaurante restauranteSelecionado) {
+		
+		List<Horario> horarios = horarioService.listarPorId(restauranteSelecionado.getId());
+		TableModelHorarios modelHorarios = new TableModelHorarios(horarios);
+		tableHorarios.setModel(modelHorarios);
+	
 	}
 	
 
@@ -209,7 +209,7 @@ public class ViewCadastroHorarios extends JFrame {
 									Horario horario = new Horario(diaSelecionado, horaAbertura, horaFechamento, restauranteSelecionado);
 									horarioService.salvar(horario);
 									nullCamp();
-									tableHorarios.updateUI();
+									atualizaTable(restauranteSelecionado);
 									
 								}else {
 									
@@ -227,7 +227,7 @@ public class ViewCadastroHorarios extends JFrame {
 									horarioService.salvar(horario);
 									isAlterar = false ;	
 									nullCamp();
-									tableHorarios.updateUI();
+									atualizaTable(restauranteSelecionado);
 									
 								}else {
 									
@@ -308,10 +308,9 @@ public class ViewCadastroHorarios extends JFrame {
 						   if (confirmacao == 0 ) {
 
 							   model.removerPorId(isLinhaSelecinada);
-      
 	                           tableHorarios.updateUI();
+	                           JOptionPane.showMessageDialog(contentPane ,"cadastro excluido .");
 	                           
-	                           JOptionPane.showMessageDialog(null ,"cadastro excluido .");
 						   }
 
 					} else {
