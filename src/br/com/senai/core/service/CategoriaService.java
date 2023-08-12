@@ -24,6 +24,7 @@ public class CategoriaService {
 
 		this.validar(categoria);
 		boolean isJaInserido = categoria.getId() > 0;
+		
 		if (isJaInserido) {
 			this.dao.Alterar(categoria);
 		} else {
@@ -40,7 +41,7 @@ public class CategoriaService {
 
 			if (qtdeRestaurante > 0) {
 				throw new IllegalArgumentException(
-						"Não foi possível excluir a categoria . Motivo : Existe (m)" + qtdeRestaurante + "vinculados ");
+						"Não foi possível excluir a categoria . Motivo :" + qtdeRestaurante + "vinculados ");
 			}
 
 			this.dao.ExcluirPor(id);

@@ -113,6 +113,13 @@ public class ViewMenu extends JFrame {
 		menuBar.add(Sair);
 		
 		JMenuItem btnSair = new JMenuItem("Sair");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+				
+			}
+		});
 		Sair.add(btnSair);
 		
 		setLocationRelativeTo(null);

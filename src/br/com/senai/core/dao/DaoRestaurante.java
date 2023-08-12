@@ -10,9 +10,9 @@ public interface DaoRestaurante {
 
 	public void inserir(Restaurante restaurante);
 	
-	public void Alterar(Restaurante restaurante) ;
+	public void alterar(Restaurante restaurante) ;
 	
-	public void ExcluirPor(int id);
+	public void excluirPor(int id);
 	
 	public Restaurante buscarPor(int id );
 	

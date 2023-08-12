@@ -27,8 +27,9 @@ public class RestauranteService {
 		
 		this.validar(restaurante);
 		boolean isJaInserido = restaurante.getId() > 0 ; 
+		
 		if(isJaInserido) {
-			this.dao.Alterar(restaurante);
+			this.dao.alterar(restaurante);
 		}else {
 			this.dao.inserir(restaurante);
 		
@@ -45,14 +46,14 @@ public class RestauranteService {
 			
 			if (isExisteHorario) {
 				throw new IllegalArgumentException("Não foi possivel excluir o restaurante . Motivo: Existem " + qtdeDeHorarios	
-												  + "horários vinculados ao restaurante" );
+												  + "horários vinculados ao restaurante " );
 			}
 			
-			this.dao.ExcluirPor(idRestaurante);
+			this.dao.excluirPor(idRestaurante);
 			
 			
 		}else {
-			throw new IllegalArgumentException("O id da Restaurante deve ser maior que zero ");
+			throw new IllegalArgumentException("O id da Restaurante deve ser maior que zero ! ");
 		}
 		
 	}
@@ -79,13 +80,12 @@ public class RestauranteService {
 			Restaurante restauranteEncontrada = this.dao.buscarPor(idRestaurante);
 			
 			if (restauranteEncontrada == null) {
-				throw new IllegalArgumentException("Não foi encontrado Restaurante para o código informado");
+				throw new IllegalArgumentException("Não foi encontrado Restaurante para o código informado !");
 			}
 			return restauranteEncontrada;
 			
 		} else {
-			throw new IllegalArgumentException("O id do Restaurante deve ser maior que 0");
-	
+			throw new IllegalArgumentException("O id do Restaurante deve ser maior que 0 !");
 		}
 	}
 	
@@ -96,12 +96,12 @@ public class RestauranteService {
 		boolean isNomeInformado = nome != null && !nome.isBlank();
 		
 		if(!isCategoriaInformada && !isNomeInformado) {
-			throw new IllegalArgumentException( " Informe o nome e/ou categoria para listagem ");
+			throw new IllegalArgumentException( " Informe o nome e/ou categoria para listagem !");
 		}
 		
 		String filtroNome = "" ;
 		
-		if (categoria != null && categoria.getId() > 0 ) {		
+		if (categoria == null && categoria.getId() > 0 ) {		
 			filtroNome = nome + "% ";		
 		}else {			
 			filtroNome = "%" + nome + "%" ;		
@@ -110,6 +110,7 @@ public class RestauranteService {
 		return dao.listarPor(filtroNome , categoria ) ;
 		
 	}
+	
 	
 	private void validar (Restaurante restaurante) {
 		
