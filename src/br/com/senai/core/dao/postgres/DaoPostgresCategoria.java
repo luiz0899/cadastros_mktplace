@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultRowSorter;
-
-import org.postgresql.translation.messages_bg;
-
 import br.com.senai.core.dao.DaoCategoria;
 import br.com.senai.core.dao.ManagerDb;
 import br.com.senai.core.domain.Categoria;
@@ -87,8 +83,8 @@ public class DaoPostgresCategoria implements DaoCategoria {
 
 			ps = conexao.prepareStatement(DELETE);
 			ps.setInt(1, id);
-			boolean isEsclusaoOk = ps.executeUpdate() == 1;
-			if (isEsclusaoOk) {
+			boolean isExclusaoOk = ps.executeUpdate() == 1;
+			if (isExclusaoOk) {
 				this.conexao.commit();
 			} else {
 				this.conexao.rollback();

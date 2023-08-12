@@ -29,10 +29,9 @@ public class RestauranteService {
 		boolean isJaInserido = restaurante.getId() > 0 ; 
 		if(isJaInserido) {
 			this.dao.Alterar(restaurante);
-			JOptionPane.showMessageDialog(null , "Restaurante salvo com sucesso!");
 		}else {
 			this.dao.inserir(restaurante);
-			JOptionPane.showMessageDialog(null , "Restaurante salvo com sucesso!");
+		
 
 		}
 	}
@@ -128,22 +127,22 @@ public class RestauranteService {
 						throw new IllegalArgumentException("Todos os campos são obrigatorios , Menos complemento . " );															
 					}
 			
-			boolean isNomeInvalido = restaurante.getNome().length() < 250 ;
+			boolean isNomeInvalido = restaurante.getNome().length() > 250 ;
 					
 					if (isNomeInvalido) {
 						throw new IllegalArgumentException("O campo nome só pode possuir 250 caracteres . " );															
 					}
-			boolean isCidadeInvalido = restaurante.getEndereco().getCidade().length() < 80 ;
+			boolean isCidadeInvalido = restaurante.getEndereco().getCidade().length() > 80 ;
 					
 					if (isCidadeInvalido) {
 						throw new IllegalArgumentException("O campo Cidade só pode possuir 80 caracteres . " );															
 					}
-		    boolean isLogradouroInvalido = restaurante.getEndereco().getLogradouro().length() < 200 ;
+		    boolean isLogradouroInvalido = restaurante.getEndereco().getLogradouro().length() > 200 ;
 					
 					if (isLogradouroInvalido) {
 						throw new IllegalArgumentException("O campo Logradouro só pode possuir 200 caracteres . " );															
 					}
-			boolean isBairroInvalido = restaurante.getEndereco().getBairro().length() < 250 ;
+			boolean isBairroInvalido = restaurante.getEndereco().getBairro().length() > 250 ;
 						
 					if (isBairroInvalido) {
 						throw new IllegalArgumentException("O campo Bairro só pode possuir 250 caracteres . " );															

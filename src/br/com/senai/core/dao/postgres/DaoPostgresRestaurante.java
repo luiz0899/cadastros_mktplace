@@ -23,22 +23,28 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 
 	private final String DELETE = "DELETE FROM restaurantes WHERE id = ? " ;
 	
-	private final String SELECT_BY_ID = " SELECT r.id id_restaurante , r.nome nome_restaurante , r.descricao , r.cidade ,r.logradouro, "  
-										+ "r.bairro , r.complemento ,c.id id_categoria , c.nome nome_categoria " 
-										+"FROM restaurantes r ,categorias c"
-										+ "WHERE r.id_categoria = c.id AND r.id ? ";
+	private final String SELECT_BY_ID = "SELECT r.id id_restaurante, r.nome nome_restaurante, r.descricao, "
+							            + "r.cidade, r.logradouro, r.bairro, r.complemento, "
+							            + "c.id id_categoria, c.nome nome_categoria "
+							            + "FROM restaurantes r,"
+							            + "     categorias c "
+							            + "WHERE r.id_categoria = c.id "
+							            + "AND r.id = ?";
 	
-	private final String SELECT_BY_NOME_CATEGES = "SELECT r.id id_restaurante , r.nome nome_restaurante , r.descricao , r.cidade ,r.logradouro," 
-												+ "r.bairro , r.complemento ,c.id id_categoria , c.nome nome_categoria " 
-												+ "FROM restaurantes r ,categorias c"
-												+ "where r.id_categoria = c.id" ;
-	
+	private final String SELECT_BY_NOME_CATEGES = "SELECT r.id id_restaurante, r.nome nome_restaurante, "
+												+ "r.descricao, "
+												+ "r.cidade, r.logradouro, r.bairro, r.complemento, "
+												+ "c.id id_categoria, c.nome nome_categoria "
+												+ "FROM restaurantes r,"
+												+ "     categorias c "
+												+ "WHERE r.id_categoria = c.id ";
+
 	private final String SELECT_TODOS ="SELECT r.id id_restaurante , r.nome nome_restaurante , r.descricao , r.cidade ,r.logradouro, "
 									  +"r.bairro , r.complemento ,c.id id_categoria , c.nome nome_categoria "
 									  +"FROM restaurantes r ,categorias c "
 									  +"WHERE r.id_categoria = c.id ORDER BY r.nome" ; 
 											
-	private final String COUNT_BY_CATEG = " SELECT cont(*) qtde FROM restaurantes r where r.id_categoria = ? " ;
+	private final String COUNT_BY_CATEG = " SELECT Count(*) qtde FROM restaurantes r where r.id_categoria = ? " ;
 	
 	private Connection conexao ;
 	
@@ -47,15 +53,12 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 		this.conexao = ManagerDb.getInstance().getConexao(); 
 	}
 	
-	
-	
 	@Override
 	public void inserir(Restaurante restaurante) {
 		
 		PreparedStatement ps = null ;
 		
 		try {
-		
 			ps = conexao.prepareStatement(INSERT);
 			ps.setString(1,restaurante.getNome());
 			ps.setString(2, restaurante.getDescricao());
@@ -64,7 +67,6 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 			ps.setString(5, restaurante.getEndereco().getBairro());
 			ps.setString(6, restaurante.getEndereco().getComplemento());
 			ps.setInt(7, restaurante.getCategoria().getId());
-			ps.setInt(8, restaurante.getId());
 			
 			
 		} catch (Exception e) {
@@ -238,61 +240,54 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 
 	@Override
 	public List<Restaurante> listarPor(String nome, Categoria categoria) {
-		
-		PreparedStatement ps = null ;
-		ResultSet rs = null ;
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		List<Restaurante> restaurantes = new ArrayList<Restaurante>();
 		
 		try {
 			
-			StringBuilder consulta = new StringBuilder (SELECT_BY_NOME_CATEGES );
+			StringBuilder consulta = new StringBuilder(SELECT_BY_NOME_CATEGES);
 			
-			if (categoria != null ) {
-				
-				consulta.append("AND c.id ") ;
-				
+			if (categoria != null) {
+				consulta.append(" AND c.id = ? ");
 			}
+			
 			if (nome != null && !nome.isBlank()) {
-				
-				consulta.append("AND Upper(r.nome)LIKE Upper(?) ");
-				
+				consulta.append(" AND Upper(r.nome) LIKE Upper(?) ");
 			}
 			
-			consulta.append("ORDER BY r.nome ");
+			consulta.append(" ORDER BY r.nome ");
 			
 			ps = conexao.prepareStatement(consulta.toString());
 			
 			int indice = 1;
+			
 			if (categoria != null) {
 				ps.setInt(indice, categoria.getId());
 				indice++;
 			}
 			
-			if (nome != null && !nome.isBlank() ) {
-				
+			if (nome != null && !nome.isBlank()) {
 				ps.setString(indice, nome);
-				
 			}
 			
 			rs = ps.executeQuery();
 			
-			while(rs.next()) {
-				
+			while (rs.next()) {
 				restaurantes.add(extrairDo(rs));
-				
 			}
-			 
-			return restaurantes ;
 			
-		} catch (Exception e) {
+			return restaurantes;
 			
-			throw new RuntimeException("ocorreu um erro ao buscar o restaurante " + e.getMessage())  ;
-	
+		}catch (Exception e) {
+			throw new RuntimeException("Ocorreu um erro ao listar os restaurantes. "
+					+ "Motivo: " + e.getMessage());
 		}finally {
 			ManagerDb.getInstance().fechar(ps);
 			ManagerDb.getInstance().fechar(rs);
-		}
-		
+		}		
+				
 	}
 	
 	

@@ -1,4 +1,4 @@
-package br.com.senai.view;
+package br.com.senai.view.horario;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

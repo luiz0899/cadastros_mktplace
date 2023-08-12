@@ -4,18 +4,18 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import br.com.senai.core.domain.Categoria;
+import br.com.senai.core.domain.Restaurante;
 
-public class CategoriaTableModel extends AbstractTableModel {
+public class RestauranteTableModel extends AbstractTableModel{
 
 	private static final long serialVersionUID = 1L;
 
-	private final int QTDE_COLUNAS = 2;
+	private final int QTDE_COLUNAS = 3;
 	
-	private List<Categoria> categorias;
+	private List<Restaurante> restaurantes;
 	
-	public CategoriaTableModel(List<Categoria> categorias) {
-		this.categorias = categorias;
+	public RestauranteTableModel(List<Restaurante> restaurantes) {
+		this.restaurantes = restaurantes;
 	}
 	
 	@Override
@@ -28,6 +28,8 @@ public class CategoriaTableModel extends AbstractTableModel {
 			return "ID";
 		}else if (column == 1) {
 			return "Nome";
+		}else if (column == 2 ) {
+			return "Categoria" ;
 		}
 		throw new IllegalArgumentException("Indíce inválido");
 	}
@@ -35,24 +37,26 @@ public class CategoriaTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (columnIndex == 0) {
-			return categorias.get(rowIndex).getId();
+			return restaurantes.get(rowIndex).getId();
 		}else if (columnIndex == 1) {
-			return categorias.get(rowIndex).getNome();
-		}
+			return restaurantes.get(rowIndex).getNome();
+		}else if (columnIndex == 2 )
+			return restaurantes.get(rowIndex).getCategoria().getNome();
+		
 		throw new IllegalArgumentException("Índice inválido");
 	}
 	
 	@Override
 	public int getRowCount() {
-		return categorias.size();
+		return restaurantes.size();
 	}
 	
-	public Categoria getPor(int rowIndex) {
-		return categorias.get(rowIndex);
+	public Restaurante getPor(int rowIndex) {
+		return restaurantes.get(rowIndex);
 	}
 	
 	public void removerPor(int rowIndex) {
-		this.categorias.remove(rowIndex);
+		this.restaurantes.remove(rowIndex);
 	}
 	
 }

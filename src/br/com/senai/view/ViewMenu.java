@@ -19,6 +19,8 @@ import javax.swing.border.LineBorder;
 
 import br.com.senai.view.categoria.ViewCadastroCategoria;
 import br.com.senai.view.categoria.ViewConsultaCategoria;
+import br.com.senai.view.horario.ViewCadastroHorarios;
+import br.com.senai.view.restaurante.ViewConsultaRestaurante;
 
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
@@ -69,7 +71,7 @@ public class ViewMenu extends JFrame {
 		JMenu mnCadastros = new JMenu("Cadastros");
 		menuBar.add(mnCadastros);
 		
-		JMenuItem btnCadastro = new JMenuItem("Cadastros");
+		JMenuItem btnCadastro = new JMenuItem("Categorias");
 		btnCadastro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -81,6 +83,14 @@ public class ViewMenu extends JFrame {
 		mnCadastros.add(btnCadastro);
 		
 		JMenuItem btnRestaurante = new JMenuItem("Restaurantes");
+		btnRestaurante.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ViewConsultaRestaurante view = new ViewConsultaRestaurante();
+				view.setVisible(true);
+				
+			}
+		});
 		mnCadastros.add(btnRestaurante);
 		
 		JMenu config = new JMenu("Configuração");
