@@ -32,9 +32,7 @@ public class CategoriaService {
 	}
 	
 	public void removerPor (int id) {
-		
-		
-		
+			
 		if(id > 0 ) {
 			
 			int qtdeRestaurante = daoRestaurante.contarPor(id);
@@ -64,10 +62,13 @@ public class CategoriaService {
 	}
 	
 	public List<Categoria> listarPor(String nome) {
+		
 		if (nome != null && nome.length() >= 3) {
-			this.dao.listarPor("%" + nome + "%");
+			return this.dao.listarPor("%" + nome + "%");
+		}else {
+			throw new IllegalArgumentException("O filtro é obrigatório e deve conter mais de dois 2 caracteres");
 		}
-		throw new IllegalArgumentException("O filtro é obrigatório e deve conter mais de dois 2 caracteres");
+	
 	}
 	
 	public List<Categoria> ListrTodas(){
