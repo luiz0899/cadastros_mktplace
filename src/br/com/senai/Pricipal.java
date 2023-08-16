@@ -15,6 +15,7 @@ public class Pricipal {
 		
 		public static void main(String[] args) {
 			new ViewMenu().setVisible(true);
+			System.out.println("aqui foi alterado");
 			
 		}
 
